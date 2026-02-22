@@ -19,7 +19,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    src/lock_free_stack.cpp
+    # src/lock_free_stack.cpp
     # src/lock_free_queue.cpp
     # src/lock_free_list.cpp
 )
@@ -41,7 +41,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 #-----------------Test executable-----------------
 
 add_executable(${PROJECT_NAME}_tests
-    src/lock_free_stack.cpp
+    # src/lock_free_stack.cpp
     # src/lock_free_queue.cpp
     # src/lock_free_list.cpp
     tests/lock_free_stack_test.cpp
