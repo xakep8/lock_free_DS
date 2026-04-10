@@ -53,7 +53,8 @@ void LockFreeStack<T>::push(const T& value) {
     Node* old_head = head.load(std::memory_order_relaxed);
     do {
         new_node->next = old_head;
-    } while (!head.compare_exchange_weak(old_head, new_node, std::memory_order_release, std::memory_order_relaxed));
+    } while (!head.compare_exchange_weak(old_head, new_node, std::memory_order_release,
+                                         std::memory_order_relaxed));
 }
 
 template <typename T>
@@ -74,7 +75,8 @@ bool LockFreeStack<T>::pop(T& result) {
 
         Node* new_head = old_head->next;
 
-        if (head.compare_exchange_weak(old_head, new_head, std::memory_order_acq_rel, std::memory_order_acquire)) {
+        if (head.compare_exchange_weak(old_head, new_head, std::memory_order_acq_rel,
+                                       std::memory_order_acquire)) {
             result = old_head->data;
             retire_node(old_head, epoch);
             return true;
@@ -96,8 +98,8 @@ void LockFreeStack<T>::retire_node(Node* node, uint64_t retire_epoch) {
     Node* old_retired = retired_head.load(std::memory_order_relaxed);
     do {
         node->next = old_retired;
-    } while (
-        !retired_head.compare_exchange_weak(old_retired, node, std::memory_order_release, std::memory_order_relaxed));
+    } while (!retired_head.compare_exchange_weak(old_retired, node, std::memory_order_release,
+                                                 std::memory_order_relaxed));
 }
 
 template <typename T>
